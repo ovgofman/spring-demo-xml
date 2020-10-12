@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--Load values from sport.properties file to use them here-->
+    <context:property-placeholder location="classpath:sport.properties"/>
+
+    <!--Show additional log info while running -->
+    <bean id="myLoggerConfig" class="com.alex.springdemo.Sec5.MyLoggerConfig" init-method="initLogger">
+        <property name="rootLoggerLevel" value="FINE"/>
+        <property name="printedLoggerLevel" value="FINE"/>
+    </bean>
+
+    <!--Define your beans here -->
+
+    <bean id="myFortuneService"
+          class="com.alex.springdemo.Sec5.HappyFortuneService">
+        <!--HappyFortuneService myFortuneService = new HappyFortuneService();-->
+    </bean>
+
+
+    <bean id="iceSkatingCoach"
+          class="com.alex.springdemo.Sec5.IceSkatingCoach">
+
+        <!--Constructor Injection-->
+        <constructor-arg ref="myFortuneService"/>
+        <!--IceSkatingCoach iceSkatingCoach = new IceSkatingCoach(myFortuneService);-->
+    </bean>
+
+    <bean id="trackCoach"
+          class="com.alex.springdemo.Sec5.TrackCoach">
+        <!--TrackCoach trackCoach = new TrackCoach();-->
+
+        <!--Setter Injection-->
+        <property name="fortuneService" ref="myFortuneService"/>
+        <!--trackCoach.setFortuneService(myFortuneService);-->
+
+        <!--Inject literal values-->
+        <property name="email" value="BobWhite@example.com"/>
+        <property name="team" value="antelope"/>
+    </bean>
+
+    <bean id="baseballCoach"
+          class="com.alex.springdemo.Sec5.BaseballCoach">
+        <!--Constructor Injection-->
+        <constructor-arg ref="myFortuneService"/>
+
+        <!--Inject literal values-->
+        <property name="email" value="${coach.email}"/>
+        <property name="team" value="${coach.team}"/>
+    </bean>
+</beans>
+
+
+
+
+
